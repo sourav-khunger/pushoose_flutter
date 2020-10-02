@@ -2,9 +2,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:multilevel_drawer/multilevel_drawer.dart';
 import 'package:test_flutter_app/home.dart';
-// import 'package:splashscreen/splashscreen.dart';
+import 'dart:convert';
+import 'Model/response.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.cyan,
           primaryTextTheme:
-              TextTheme(headline6: TextStyle(color: Colors.white))),
+          TextTheme(headline6: TextStyle(color: Colors.white))),
       home: SplashScreen(),
       routes: {'home': (context) => Home()},
       debugShowCheckedModeBanner: false,
@@ -38,6 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
+
   @override
   void initState() {
     super.initState();
@@ -53,10 +56,12 @@ class _SplashScreenState extends State<SplashScreen> {
                 image: AssetImage("assets/bg.png"), fit: BoxFit.cover)),
         child: Center(
             child: Image.asset(
-          "assets/logo.png",
-
-          width: MediaQuery.of(context).size.width * .4,
-        )),
+              "assets/logo.png",
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * .4,
+            )),
       ),
 
       // backgroundColor:,
