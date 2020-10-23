@@ -24,6 +24,15 @@ class MyApp extends StatelessWidget {
       home: SplashScreen(),
       routes: {'home': (context) => Home()},
       debugShowCheckedModeBanner: false,
+      supportedLocales: [
+        Locale('en', 'US'),
+        Locale('fr', 'FR'),
+      ],
+      localizationsDelegates: [
+        // AppLocalizations.delegate,
+        // GlobalMaterialLocalizations.delegate,
+        // GlobalWidgetsLocalizations.delegate,
+      ],
     );
   }
 }
