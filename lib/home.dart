@@ -477,6 +477,7 @@ class _HomeState extends State<Home> {
               child: Expanded(
                   child: ListView.builder(
                       shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
                       itemCount: product.length,
                       itemBuilder: (context, i) {
