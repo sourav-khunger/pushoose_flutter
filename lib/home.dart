@@ -444,34 +444,34 @@ class _HomeState extends State<Home> {
       drawer: new Drawer(
         child: ListView(
           children: <Widget>[
-            Container(
-              height: 55.0,
-              child: DrawerHeader(
-                  child: GestureDetector(
-                    onTap: () {
-                      // print("onTap called.");
-                      setState(() {
-                        pressed = !pressed;
-                        if (!pressed) {
-                        } else {}
-                      });
-                    },
-                    child: pressed
-                        ? Text(
-                            "French",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 18),
-                          )
-                        : Text(
-                            "English",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 18),
-                          ),
-                  ),
-                  decoration: BoxDecoration(color: Colors.deepOrange),
-                  margin: EdgeInsets.all(0.0),
-                  padding: EdgeInsets.all(15.0)),
-            ),
+            // Container(
+            //   height: 55.0,
+            //   child: DrawerHeader(
+            //       child: GestureDetector(
+            //         onTap: () {
+            //           // print("onTap called.");
+            //           setState(() {
+            //             pressed = !pressed;
+            //             if (!pressed) {
+            //             } else {}
+            //           });
+            //         },
+            //         child: pressed
+            //             ? Text(
+            //                 "French",
+            //                 textAlign: TextAlign.center,
+            //                 style: TextStyle(color: Colors.white, fontSize: 18),
+            //               )
+            //             : Text(
+            //                 "English",
+            //                 textAlign: TextAlign.center,
+            //                 style: TextStyle(color: Colors.white, fontSize: 18),
+            //               ),
+            //       ),
+            //       decoration: BoxDecoration(color: Colors.deepOrange),
+            //       margin: EdgeInsets.all(0.0),
+            //       padding: EdgeInsets.all(15.0)),
+            // ),
             ConstrainedBox(
               constraints: BoxConstraints(maxHeight: 1000),
               child: Expanded(
