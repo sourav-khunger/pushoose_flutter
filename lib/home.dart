@@ -20,6 +20,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   var product = new List<ProductCat>();
   TranslatedModel translatedResponse;
+  bool isLoadingPage;
 
   /*
   var productNaviEN = new List<String>();
@@ -40,13 +41,20 @@ class _HomeState extends State<Home> {
   String translated = "";
   bool isHigh = false;
   Future<String> _bar;
+  bool isLoading;
 
   void getData() async {
+    setState(() {
+      isLoading = false;
+    });
     // ApiManager.getData()
     //     .then((value) => setState(() => {this.product = value}));
     ApiManager.getData().then((value) {
       setState(() {
         this.product = value;
+        setState(() {
+          isLoading = false;
+        });
         /*  productNaviEN = new List();
         productNaviFN = new List();
         for (int i = 0; i < product.length; i++) {
@@ -58,6 +66,9 @@ class _HomeState extends State<Home> {
   }
 
   void getProducts() async {
+    setState(() {
+      isLoadingPage = true;
+    });
     ApiManager.getAllProducts().then((value) {
       setState(() {
         this.productDetail = value;
@@ -66,6 +77,9 @@ class _HomeState extends State<Home> {
         // productNaviENProduct = new List();
         // productNaviFNProduct = new List();
         _searchList = productDetail;
+        setState(() {
+          isLoadingPage = false;
+        });
         // for (int i = 0; i < _searchList.length; i++) {
         //   translateToEnglishProduct(_searchList[i].name);
         //   translateToFrenchProduct(_searchList[i].name);
@@ -106,17 +120,17 @@ class _HomeState extends State<Home> {
   // }
 
   void getProductByCategoryId(String id) async {
+    setState(() {
+      isLoadingPage = true;
+    });
     ApiManager.getProductByCategoryId(id).then((value) {
       setState(() {
         this.productDetail = value;
         _searchList = productDetail;
 
-        // productNaviENProduct = new List();
-        // productNaviFNProduct = new List();
-        // for (int i = 0; i < _searchList.length; i++) {
-        //   translateToEnglishProduct(_searchList[i].name);
-        //   translateToFrenchProduct(_searchList[i].name);
-        // }
+        setState(() {
+          isLoadingPage = false;
+        });
       });
     });
   }
@@ -182,19 +196,11 @@ class _HomeState extends State<Home> {
     });
   }
 
-// _getUsers() {
-//   API.getUsers().then((response) {
-//     setState(() {
-//       Iterable list = json.decode(response.body);
-//       users = list.map((model) => User.fromJson(model)).toList();
-//     });
-//   });
-// }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    isLoadingPage = true;
     getData();
     init();
     // _bar = translateToEnglish(text);
@@ -407,43 +413,119 @@ class _HomeState extends State<Home> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.white54,
       appBar: buildBar(context),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
-              child: GridView.builder(
-                  itemCount: _searchList.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    mainAxisSpacing: kDefaultPaddin,
-                    crossAxisSpacing: kDefaultPaddin,
-                    childAspectRatio: .85,
-                  ),
-                  itemBuilder: (context, index) {
-                    if (_searchList.length == 0 || _searchList.length == null) {
-                      return Center(
-                        child: Text(
-                          "List is Empty...",
-                          style: TextStyle(
-                            color: Colors.black87,
-                          ),
+          isLoadingPage
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 50, bottom: 10),
+                  child: Center(
+                      child: Column(
+                    children: [
+                      CircularProgressIndicator(
+                        valueColor: new AlwaysStoppedAnimation<Color>(
+                            Colors.deepOrange),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text('Loading please wait...'))
+                    ],
+                  )))
+              : Expanded(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
+                    child: GridView.builder(
+                        itemCount: _searchList.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: kDefaultPaddin,
+                          crossAxisSpacing: kDefaultPaddin,
+                          childAspectRatio: .85,
                         ),
-                      );
-                    } else {
-                      return new GridItem(_searchList[index]);
-                    }
-                  }),
-            ),
-          ),
+                        itemBuilder: (context, index) {
+                          if (_searchList.length == 0 ||
+                              _searchList.length == null) {
+                            return Center(
+                              child: Text(
+                                "List is Empty...",
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            );
+                          } else {
+                            return new GridItem(_searchList[index]);
+                          }
+                        }),
+                  ),
+                ),
         ],
       ),
       drawer: new Drawer(
         child: ListView(
           children: <Widget>[
+            isLoading
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 50, bottom: 10),
+                    child: Center(
+                        child: Column(
+                      children: [
+                        CircularProgressIndicator(
+                          valueColor: new AlwaysStoppedAnimation<Color>(
+                              Colors.deepOrange),
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text('Loading please wait...'))
+                      ],
+                    )))
+                : ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: 1000),
+                    child: Expanded(
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            itemCount: product.length,
+                            itemBuilder: (context, i) {
+                              if (product[i].children.length > 0) {
+                                // return ListView.builder(
+                                //   itemCount: product[i].children.length,
+                                //   itemBuilder: (context, a) {
+
+                                return expansionTileMethod(i);
+                              } else {
+                                return Column(
+                                  children: [
+                                    /*FutureBuilder(
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<String> snapshot) {
+                                  return*/
+                                    ListTile(
+                                      title: Text(product[i].name),
+                                      onTap: () {
+                                        setState(() {
+                                          // print(translateToEnglish(
+                                          //         product[i].name)
+                                          //     .toString());
+                                          getProductByCategoryId(
+                                              product[i].termId.toString());
+                                          _buildSearchList();
+                                        });
+                                        Navigator.of(context).pop();
+                                      },
+                                    )
+                                    // },
+                                    // future: translateToEnglish(product[i].name),
+                                    // ),
+                                  ],
+                                );
+                              }
+                            })),
+                  )
             // Container(
             //   height: 55.0,
             //   child: DrawerHeader(
@@ -472,50 +554,6 @@ class _HomeState extends State<Home> {
             //       margin: EdgeInsets.all(0.0),
             //       padding: EdgeInsets.all(15.0)),
             // ),
-            ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: 1000),
-              child: Expanded(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      itemCount: product.length,
-                      itemBuilder: (context, i) {
-                        if (product[i].children.length > 0) {
-                          // return ListView.builder(
-                          //   itemCount: product[i].children.length,
-                          //   itemBuilder: (context, a) {
-
-                          return expansionTileMethod(i);
-                        } else {
-                          return Column(
-                            children: [
-                              /*FutureBuilder(
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<String> snapshot) {
-                                  return*/
-                              ListTile(
-                                title: Text(product[i].name),
-                                onTap: () {
-                                  setState(() {
-                                    // print(translateToEnglish(
-                                    //         product[i].name)
-                                    //     .toString());
-                                    getProductByCategoryId(
-                                        product[i].termId.toString());
-                                    _buildSearchList();
-                                  });
-                                  Navigator.of(context).pop();
-                                },
-                              )
-                              // },
-                              // future: translateToEnglish(product[i].name),
-                              // ),
-                            ],
-                          );
-                        }
-                      })),
-            )
           ],
         ),
       ),
