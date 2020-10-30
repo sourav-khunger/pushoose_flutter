@@ -1,8 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:test_flutter_app/Model/Product.dart';
 import 'package:test_flutter_app/Model/response.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,15 +15,25 @@ import 'apiManager.dart';
 import 'constants.dart';
 
 class Home extends StatefulWidget {
+  var product = new List<ProductCat>();
+
+  // Home(this.product);
+  Home(this.product, {Key key}) : super(key: key);
+
   @override
-  _HomeState createState() => _HomeState();
+  _HomeState createState() => _HomeState(this.product);
 }
 
 class _HomeState extends State<Home> {
+  var productCat = new List<ProductCat>();
+
+  _HomeState(this.productCat);
+
   var product = new List<ProductCat>();
   TranslatedModel translatedResponse;
   bool isLoadingPage;
-
+  @override
+  // TODO: implement widget
   /*
   var productNaviEN = new List<String>();
   var productNaviFN = new List<String>();
@@ -33,7 +45,13 @@ class _HomeState extends State<Home> {
   Icon actionIcon = new Icon(Icons.search, color: Colors.white);
   bool pressed = false;
   bool isEnglish = true;
-  Widget appBarTitle = new Text("Pushoose");
+
+  // Widget appBarTitle = new Text("Pushoose");
+  Widget appBarTitle = Image.asset(
+    'assets/icon_logo.png',
+    width: 100,
+    height: 50,
+  );
   List<Images> myList = new List();
   bool _IsSearching;
   String _searchText = "";
@@ -42,6 +60,8 @@ class _HomeState extends State<Home> {
   bool isHigh = false;
   Future<String> _bar;
   bool isLoading;
+  final Color color1 = HexColor('#df2473');
+  final Color color2 = HexColor('#f77605');
 
   void getData() async {
     setState(() {
@@ -201,6 +221,9 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
     isLoadingPage = true;
+    if (productCat != null) {
+      product = productCat;
+    }
     getData();
     init();
     // _bar = translateToEnglish(text);
@@ -218,9 +241,13 @@ class _HomeState extends State<Home> {
         Icons.search,
         color: Colors.white,
       );
-      this.appBarTitle = Text(
-        "Pushoose",
-        style: TextStyle(color: Colors.white),
+      // this.appBarTitle = Text(
+      //   "Pushoose",
+      //   style: TextStyle(color: Colors.white),
+      this.appBarTitle = Image.asset(
+        'assets/icon_logo.png',
+        width: 100,
+        height: 50,
       );
       _IsSearching = false;
       _searchQuery.clear();
@@ -264,7 +291,10 @@ class _HomeState extends State<Home> {
                 ),
                 child: new Text(
                   productDetail[index].name,
-                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 18,
+                  ),
                   overflow: TextOverflow.clip,
                   maxLines: 2,
                   textAlign: TextAlign.center,
@@ -272,12 +302,13 @@ class _HomeState extends State<Home> {
               ),
               footer: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: new Text(
-                  productDetail[index].price + "€",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  overflow: TextOverflow.clip,
-                  textAlign: TextAlign.center,
-                ),
+                // child: CircleButton(onTap: () => print("Cool"), iconData: Icons.favorite_border),
+                // // new Text(
+                //   productDetail[index].price + "€",
+                //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                //   overflow: TextOverflow.clip,
+                //   textAlign: TextAlign.center,
+                // ),
               ),
               child: Column(
                 children: [
@@ -413,7 +444,7 @@ class _HomeState extends State<Home> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.white54,
+      backgroundColor: Colors.white70,
       appBar: buildBar(context),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -430,7 +461,10 @@ class _HomeState extends State<Home> {
                       ),
                       Padding(
                           padding: const EdgeInsets.only(top: 10),
-                          child: Text('Loading please wait...'))
+                          child: Text(
+                            'Loading please wait...',
+                            style: GoogleFonts.poppins(),
+                          ))
                     ],
                   )))
               : Expanded(
@@ -451,7 +485,7 @@ class _HomeState extends State<Home> {
                             return Center(
                               child: Text(
                                 "List is Empty...",
-                                style: TextStyle(
+                                style: GoogleFonts.mavenPro(
                                   color: Colors.black87,
                                 ),
                               ),
@@ -479,7 +513,11 @@ class _HomeState extends State<Home> {
                         ),
                         Padding(
                             padding: const EdgeInsets.only(top: 10),
-                            child: Text('Loading please wait...'))
+                            child: Text(
+                              'Loading please wait...',
+                              style: GoogleFonts.mavenPro(
+                                  fontWeight: FontWeight.bold),
+                            ))
                       ],
                     )))
                 : ConstrainedBox(
@@ -505,7 +543,11 @@ class _HomeState extends State<Home> {
                                     AsyncSnapshot<String> snapshot) {
                                   return*/
                                     ListTile(
-                                      title: Text(product[i].name),
+                                      title: Text(
+                                        product[i].name,
+                                        style: GoogleFonts.mavenPro(
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                       onTap: () {
                                         setState(() {
                                           // print(translateToEnglish(
@@ -603,6 +645,14 @@ class _HomeState extends State<Home> {
 
   Widget buildBar(BuildContext context) {
     return AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [color2, color1],
+              stops: [0.00, 1.0],
+            ),
+          ),
+        ),
         centerTitle: true,
         backgroundColor: Colors.deepOrange,
         iconTheme: new IconThemeData(color: Colors.white),
@@ -720,13 +770,17 @@ class _HomeState extends State<Home> {
       if (product[i].children[a].children.length > 0) {
         // print("IFFF " + product[i].children[a].name);
         return ExpansionTile(
-            title: Text(product[i].name),
+            title: Text(
+              product[i].name,
+              style: GoogleFonts.mavenPro(fontWeight: FontWeight.bold),
+            ),
             children: <Widget>[new Column(children: expansionList(i, a))]);
       } else {
         // print("ELSE " + product[i].name);
         if (product[i].children.length > 0) {
           return ExpansionTile(
-            title: Text(product[i].name),
+            title: Text(product[i].name,
+                style: GoogleFonts.mavenPro(fontWeight: FontWeight.bold)),
             children: <Widget>[
               new Column(
                 children: _buildExpandableContent(i),
@@ -735,7 +789,8 @@ class _HomeState extends State<Home> {
           );
         } else {
           return ListTile(
-            title: Text(product[i].name),
+            title: Text(product[i].name,
+                style: GoogleFonts.mavenPro(fontWeight: FontWeight.bold)),
             onTap: () {
               setState(() {
                 getProductByCategoryId(product[i].termId.toString());
@@ -756,20 +811,13 @@ class _HomeState extends State<Home> {
         new ListTile(
           title: new Text(
             product[i].children[a].name,
-            style: new TextStyle(fontSize: 15.0),
+            style: GoogleFonts.mavenPro(
+                fontSize: 15.0, fontWeight: FontWeight.bold),
           ),
           onTap: () {
             setState(() {
               getProductByCategoryId(product[i].termId.toString());
               Navigator.of(context).pop();
-              // Fluttertoast.showToast(
-              //     msg: "List ",
-              //     toastLength: Toast.LENGTH_SHORT,
-              //     gravity: ToastGravity.BOTTOM,
-              //     timeInSecForIosWeb: 1,
-              //     backgroundColor: Colors.black87,
-              //     textColor: Colors.white,
-              //     fontSize: 16.0);
             });
           },
         ),
@@ -786,7 +834,10 @@ class _HomeState extends State<Home> {
       if (product[i].children[a].children.length > 0) {
         columnContent.add(
           new ExpansionTile(
-            title: Text(product[i].children[a].name),
+            title: Text(
+              product[i].children[a].name,
+              style: GoogleFonts.mavenPro(fontWeight: FontWeight.bold),
+            ),
             children: <Widget>[
               new Column(
                 children: _buildExpandableContent2(i, a),
@@ -796,7 +847,8 @@ class _HomeState extends State<Home> {
         );
       } else {
         columnContent.add(new ListTile(
-          title: Text(product[i].children[a].name),
+          title: Text(product[i].children[a].name,
+              style: GoogleFonts.mavenPro(fontWeight: FontWeight.bold)),
           onTap: () {
             setState(() {
               getProductByCategoryId(product[i].children[a].termId.toString());
@@ -826,13 +878,55 @@ class _HomeState extends State<Home> {
           },
           title: new Text(
             product[i].children[z].children[a].name,
-            style: new TextStyle(fontSize: 15.0),
+            style: GoogleFonts.mavenPro(
+                fontSize: 15.0, fontWeight: FontWeight.bold),
           ),
         ),
       );
     }
 
     return columnContent;
+  }
+}
+
+// generate hex color
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
+
+class CircleButton extends StatelessWidget {
+  final GestureTapCallback onTap;
+  final IconData iconData;
+
+  const CircleButton({Key key, this.onTap, this.iconData}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double size = 50.0;
+
+    return new InkResponse(
+      onTap: onTap,
+      child: new Container(
+        width: size,
+        height: size,
+        decoration: new BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+        ),
+        child: new Icon(
+          iconData,
+          color: Colors.black,
+        ),
+      ),
+    );
   }
 }
 
@@ -855,46 +949,125 @@ class GridItem extends StatelessWidget {
       ),
       child: new InkResponse(
         child: new GridTile(
-            header: Padding(
-                padding: const EdgeInsets.only(
-                  top: 6,
-                  left: 10,
-                  right: 10,
-                ),
-                child: new Text(
-                  model.name,
-                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),
-                  overflow: TextOverflow.clip,
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                )),
-            footer: Row(
+            header: Column(
               children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 80),
-                    child: new Text(
-                      model.price + "€",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
-                      overflow: TextOverflow.clip,
-                      textAlign: TextAlign.center,
+                new Padding(
+                    padding: const EdgeInsets.only(right: 15, top: 20),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Container(
+                        width: 65,
+                        height: 65,
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: new AutoSizeText(
+                              model.price + "€",
+                              style: GoogleFonts.mavenPro(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 21,
+                                  color: Colors.pink),
+                              overflow: TextOverflow.clip,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        decoration: BoxDecoration(boxShadow: [
+                          new BoxShadow(
+                            color: Colors.black,
+                            blurRadius: 8.0,
+                          ),
+                        ], shape: BoxShape.circle, color: Colors.white),
+                      ),
+                    )),
+              ],
+            ),
+            footer: Stack(
+              children: [
+                Container(
+                    height: 90,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          Colors.black,
+                          Colors.transparent,
+                        ],
+                        stops: [0.00, 0.9],
+                      ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 90, bottom: 5),
-                  child: RaisedButton(
-                    onPressed: () {
-                      _launchURL(context, model.permalink);
-                    },
-                    child: Text(
-                      "View Details",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    color: Colors.deepOrange,
-                  ),
-                ),
+                    child: Center(
+                      child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20, left: 12, right: 10, bottom: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: new Text(
+                              model.name,
+                              style: GoogleFonts.mavenPro(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                              overflow: TextOverflow.clip,
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                            ),
+                          )),
+                    )),
+                Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 0,
+                        right: 5,
+                      ),
+                      child: Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xFFf09416),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12.0)),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                top: 3, bottom: 3, left: 5, right: 5),
+                            child: Text(model.store.name,
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15,
+                                )),
+                          )),
+                    ))
+                // Container(
+                //   decoration: BoxDecoration(
+                //     boxShadow: [
+                //       BoxShadow(
+                //         color: Colors.black,
+                //         offset: Offset(0, 1),
+                //         blurRadius: 20,
+                //         spreadRadius: 0.5,
+                //       ),
+                //     ],
+                //   ),
+                //
+                //   height: 15,
+                // )
+
+                // Padding(
+                //   padding: const EdgeInsets.only(left: 90, bottom: 5),
+                //   child: RaisedButton(
+                //     onPressed: () {
+                //       _launchURL(context, model.permalink);
+                //     },
+                //     child: Text(
+                //       "Specs with mockup",
+                //       style: TextStyle(color: Colors.white),
+                //     ),
+                //     color: Colors.deepOrange,
+                //   ),
+                // ),
               ],
             ),
             child: Column(
