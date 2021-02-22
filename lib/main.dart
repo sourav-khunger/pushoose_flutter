@@ -54,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
           MaterialPageRoute(
               builder: (context) => Home(this.productCat)));
 
-      Navigator.of(context).pushReplacementNamed('home');
+      // Navigator.of(context).pushReplacementNamed('home');
     });
   }
   void getData() async {

@@ -499,147 +499,115 @@ class _HomeState extends State<Home> {
         ],
       ),
       drawer: new Drawer(
-        child: ListView(
-          children: <Widget>[
-            isLoading
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 50, bottom: 10),
-                    child: Center(
-                        child: Column(
-                      children: [
-                        CircularProgressIndicator(
-                          valueColor: new AlwaysStoppedAnimation<Color>(
-                              Colors.deepOrange),
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Text(
-                              'Loading please wait...',
-                              style: GoogleFonts.mavenPro(
-                                  fontWeight: FontWeight.bold),
-                            ))
-                      ],
-                    )))
-                : ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: 1000),
-                    child: Expanded(
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            itemCount: product.length,
-                            itemBuilder: (context, i) {
-                              if (product[i].children.length > 0) {
-                                // return ListView.builder(
-                                //   itemCount: product[i].children.length,
-                                //   itemBuilder: (context, a) {
+        child: isLoading
+            ? Padding(
+                padding: const EdgeInsets.only(top: 50, bottom: 10),
+                child: Center(
+                    child: Column(
+                  children: [
+                    CircularProgressIndicator(
+                      valueColor:
+                          new AlwaysStoppedAnimation<Color>(Colors.deepOrange),
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text(
+                          'Loading please wait...',
+                          style:
+                              GoogleFonts.mavenPro(fontWeight: FontWeight.bold),
+                        ))
+                  ],
+                )))
+            : ListView(
+                children: <Widget>[
+                  Column(
+                    children: [
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxHeight: 1000),
+                        child: /*Expanded(*/
+                            Column(
+                          children: [
+                            ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.zero,
+                                itemCount: product.length,
+                                itemBuilder: (context, i) {
+                                  if (product[i].children.length > 0) {
+                                    // return ListView.builder(
+                                    //   itemCount: product[i].children.length,
+                                    //   itemBuilder: (context, a) {
 
-                                return expansionTileMethod(i);
-                              } else {
-                                return Column(
-                                  children: [
-                                    /*FutureBuilder(
+                                    return expansionTileMethod(i);
+                                  } else {
+                                    return Column(
+                                      children: [
+                                        /*FutureBuilder(
                                 builder: (BuildContext context,
                                     AsyncSnapshot<String> snapshot) {
                                   return*/
-                                    ListTile(
-                                      title: Text(
-                                        product[i].name,
-                                        style: GoogleFonts.mavenPro(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      onTap: () {
-                                        setState(() {
-                                          // print(translateToEnglish(
-                                          //         product[i].name)
-                                          //     .toString());
-                                          getProductByCategoryId(
-                                              product[i].termId.toString());
-                                          _buildSearchList();
-                                        });
-                                        Navigator.of(context).pop();
-                                      },
-                                    )
-                                    // },
-                                    // future: translateToEnglish(product[i].name),
-                                    // ),
-                                  ],
-                                );
-                              }
-                            })),
+                                        ListTile(
+                                          title: Text(
+                                            product[i].name,
+                                            style: GoogleFonts.mavenPro(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          onTap: () {
+                                            setState(() {
+                                              // print(translateToEnglish(
+                                              //         product[i].name)
+                                              //     .toString());
+                                              getProductByCategoryId(
+                                                  product[i].termId.toString());
+                                              _buildSearchList();
+                                            });
+                                            Navigator.of(context).pop();
+                                          },
+                                        )
+                                        // },
+                                        // future: translateToEnglish(product[i].name),
+                                        // ),
+                                      ],
+                                    );
+                                  }
+                                })
+                          ],
+                        ),
+                      )
+                    ],
                   )
-            // Container(
-            //   height: 55.0,
-            //   child: DrawerHeader(
-            //       child: GestureDetector(
-            //         onTap: () {
-            //           // print("onTap called.");
-            //           setState(() {
-            //             pressed = !pressed;
-            //             if (!pressed) {
-            //             } else {}
-            //           });
-            //         },
-            //         child: pressed
-            //             ? Text(
-            //                 "French",
-            //                 textAlign: TextAlign.center,
-            //                 style: TextStyle(color: Colors.white, fontSize: 18),
-            //               )
-            //             : Text(
-            //                 "English",
-            //                 textAlign: TextAlign.center,
-            //                 style: TextStyle(color: Colors.white, fontSize: 18),
-            //               ),
-            //       ),
-            //       decoration: BoxDecoration(color: Colors.deepOrange),
-            //       margin: EdgeInsets.all(0.0),
-            //       padding: EdgeInsets.all(15.0)),
-            // ),
-          ],
-        ),
+                  // Container(
+                  //   height: 55.0,
+                  //   child: DrawerHeader(
+                  //       child: GestureDetector(
+                  //         onTap: () {
+                  //           // print("onTap called.");
+                  //           setState(() {
+                  //             pressed = !pressed;
+                  //             if (!pressed) {
+                  //             } else {}
+                  //           });
+                  //         },
+                  //         child: pressed
+                  //             ? Text(
+                  //                 "French",
+                  //                 textAlign: TextAlign.center,
+                  //                 style: TextStyle(color: Colors.white, fontSize: 18),
+                  //               )
+                  //             : Text(
+                  //                 "English",
+                  //                 textAlign: TextAlign.center,
+                  //                 style: TextStyle(color: Colors.white, fontSize: 18),
+                  //               ),
+                  //       ),
+                  //       decoration: BoxDecoration(color: Colors.deepOrange),
+                  //       margin: EdgeInsets.all(0.0),
+                  //       padding: EdgeInsets.all(15.0)),
+                  // ),
+                ],
+              ),
       ),
-      // AppBar(
-      //   backgroundColor: Colors.deepOrange,
-      //   iconTheme: new IconThemeData(color: Colors.white),
-      //   centerTitle: true,
-      //   title: appBarTitle,
-      //   actions: <Widget>[
-      //     new IconButton(
-      //       icon: actionIcon,
-      //       onPressed: () {
-      //         setState(() {
-      //           if (this.actionIcon.icon == Icons.search) {
-      //             this.actionIcon = new Icon(Icons.close);
-      //             this.appBarTitle = new TextField(
-      //               style: new TextStyle(
-      //                 color: Colors.white,
-      //               ),
-      //               decoration: new InputDecoration(
-      //                   prefixIcon:
-      //                       new Icon(Icons.search, color: Colors.white),
-      //                   hintText: "Search...",
-      //                   hintStyle: new TextStyle(
-      //                     color: Colors.white,
-      //                     fontSize: 20,
-      //                   )),
-      //             );
-      //           } else {
-      //             this.actionIcon = new Icon(Icons.search);
-      //             this.appBarTitle = new Text("Pushoose");
-      //           }
-      //         });
-      //       },
-      //     ),
-      //     IconButton(
-      //       icon: Icon(
-      //         Icons.filter_list,
-      //         color: Colors.white,
-      //       ),
-      //       onPressed: () {},
-      //     ),
-      //   ],
-      // )
+
     );
   }
 
